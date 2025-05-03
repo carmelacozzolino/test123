@@ -30,6 +30,7 @@
             flex-direction: column;
             align-items: center;
             margin-top: 30px;
+            position: relative;
         }
         img.center-img {
             max-width: 300px;
@@ -47,6 +48,13 @@
             font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
             font-size: 1.5rem;
             margin-top: 20px;
+            text-align: center;
+        }
+        .ticket-counter {
+            color: #ffd700;
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+            font-size: 1.2rem;
+            margin-top: 8px;
             text-align: center;
         }
         .footer-text {
@@ -82,6 +90,25 @@
         }
         .shop-btn:hover {
             background: #666;
+        }
+        .reset-btn {
+            position: fixed;
+            top: 24px;
+            right: 150px;
+            background: #a33;
+            color: #fff;
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 22px;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: background 0.2s;
+        }
+        .reset-btn:hover {
+            background: #c44;
         }
         .skin-btn {
             position: fixed;
@@ -162,6 +189,59 @@
             font-size: 1rem;
             min-height: 1.2em;
         }
+        #admin-panel {
+            position: fixed;
+            bottom: 80px;
+            right: 40px;
+            z-index: 300;
+            background: #222;
+            border-radius: 18px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.7);
+            padding: 32px 24px 24px 24px;
+            min-width: 320px;
+            max-width: 95vw;
+            max-height: 80vh;
+            text-align: center;
+            display: none;
+        }
+        #admin-panel h2 {
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+            color: #fff;
+            margin-top: 0;
+        }
+        #admin-panel label, #admin-panel span, #admin-panel input, #admin-panel button {
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+        }
+        #admin-panel input[type="number"] {
+            width:80px; margin-left:8px; border-radius:5px; border:1px solid #888; padding:3px 6px;
+        }
+        #admin-panel button {
+            border-radius:6px; border:none; background:#3b8c3b; color:#fff; padding:5px 12px; cursor:pointer;
+        }
+        #admin-panel button#admin-autoclick-btn {
+            padding:8px 18px;
+        }
+        #admin-panel .close {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            color: #fff;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+        }
+        #cat-img {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            pointer-events: none;
+            z-index: 10;
+            display: none;
+            user-select: none;
+        }
     </style>
 </head>
 <body>
@@ -169,10 +249,13 @@
         <h1>tylerito</h1>
     </div>
     <button class="shop-btn" id="shop-btn">negozio</button>
+    <button class="reset-btn" id="reset-btn">Resetta</button>
     <button class="skin-btn" id="skin-btn">skin</button>
     <div class="image-container">
         <img class="center-img" src="https://i.imgur.com/QSPTt9m.jpeg" alt="tylerito image" id="tyler-img">
+        <img id="cat-img" src="https://i.imgur.com/AJiDR64.jpeg" alt="cat">
         <div class="punti-tyler" id="punti-tyler">punti tyler: 0</div>
+        <div class="ticket-counter" id="ticket-counter">biglietti: 0</div>
     </div>
     <div class="footer-text">
         creato da una medusa a forma di parallelepipedo
@@ -189,7 +272,7 @@
                 </div>
                 <img src="https://i.imgur.com/oMb2dJv.jpeg" alt="biglietto tour chromakopia" style="max-width:200px; border-radius:10px; box-shadow:0 2px 12px rgba(0,0,0,0.4);">
                 <br>
-                <button class="buy-btn" data-price="100" data-item="ticket">Acquista</button>
+                <button class="buy-btn" id="buy-ticket" data-price="100" data-item="ticket">Acquista</button>
                 <div class="buy-message"></div>
             </div>
             <div class="shop-item">
@@ -198,7 +281,7 @@
                 </div>
                 <img src="https://i.imgur.com/sFKOWgu.jpeg" alt="wolf" style="max-width:200px; border-radius:10px; box-shadow:0 2px 12px rgba(0,0,0,0.4);">
                 <br>
-                <button class="buy-btn" data-price="150" data-item="wolf">Acquista</button>
+                <button class="buy-btn" id="buy-wolf" data-price="150" data-item="wolf">Acquista</button>
                 <div class="buy-message"></div>
             </div>
             <div class="shop-item">
@@ -207,14 +290,31 @@
                 </div>
                 <img src="https://i.imgur.com/hSw7bLu.jpeg" alt="call me if you get lost: the ester sale" style="max-width:200px; border-radius:10px; box-shadow:0 2px 12px rgba(0,0,0,0.4);">
                 <br>
-                <button class="buy-btn" data-price="250" data-item="ester">Acquista</button>
+                <button class="buy-btn" id="buy-ester" data-price="250" data-item="ester">Acquista</button>
+                <div class="buy-message"></div>
+            </div>
+            <div class="shop-item">
+                <div style="font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif; font-size: 1.2rem; color: #fff; margin-bottom: 10px;">
+                    don't call me if you get lost (skin) - 15 biglietti
+                </div>
+                <img src="https://i.imgur.com/KECj2Gg.png" alt="don't call me if you get lost" style="max-width:200px; border-radius:10px; box-shadow:0 2px 12px rgba(0,0,0,0.4);">
+                <br>
+                <button class="buy-btn" id="buy-dontcall" data-price="15" data-item="dontcall-ticket">Acquista</button>
+                <div class="buy-message"></div>
+            </div>
+            <div class="shop-item">
+                <div style="font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif; font-size: 1.2rem; color: #fff; margin-bottom: 10px;">
+                    gattino - 300 punti tyler
+                </div>
+                <img src="https://i.imgur.com/AJiDR64.jpeg" alt="gattino" style="max-width:100px; border-radius:10px; box-shadow:0 2px 12px rgba(0,0,0,0.4);">
+                <br>
+                <button class="buy-btn" id="buy-cat" data-price="300" data-item="cat">Acquista</button>
                 <div class="buy-message"></div>
             </div>
             <div class="shop-item">
                 <div style="font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif; font-size: 1.2rem; color: #fff; margin-bottom: 10px;">
                     autoclicker op 🔥 - 500 punti tyler
                 </div>
-                <!-- No image here -->
                 <button class="buy-btn" data-price="500" data-item="autoclicker">Acquista</button>
                 <div class="buy-message"></div>
             </div>
@@ -232,29 +332,56 @@
         </div>
     </div>
 
+    <!-- Admin Panel (always visible when dontcall skin is active) -->
+    <div id="admin-panel">
+        <span class="close" id="close-admin-panel" style="display:none;">&times;</span>
+        <h2>pannelloing :)</h2>
+        <div style="margin:18px 0;">
+            <label for="admin-points" style="color:#fff;">Aggiungi punti:</label>
+            <input type="number" id="admin-points">
+            <button id="admin-add-btn">Aggiungi</button>
+        </div>
+        <div style="margin:18px 0;">
+            <button id="admin-autoclick-btn">Autoclick ON</button>
+            <span id="admin-autoclick-status" style="color:#fff; margin-left:10px;"></span>
+        </div>
+    </div>
+
+    <audio id="meow-audio" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae3e2.mp3"></audio>
+
     <script>
         const img = document.getElementById('tyler-img');
         const punti = document.getElementById('punti-tyler');
+        const ticketCounter = document.getElementById('ticket-counter');
+        const catImg = document.getElementById('cat-img');
+        const meowAudio = document.getElementById('meow-audio');
         let count = 0;
+        let tickets = 0;
         let wolfUnlocked = false;
         let esterUnlocked = false;
+        let dontcallUnlocked = false;
+        let catUnlocked = false;
         let currentSkin = "default";
+        let catMeowInterval = null;
         const defaultImg = "https://i.imgur.com/QSPTt9m.jpeg";
         const wolfImg = "https://i.imgur.com/sFKOWgu.jpeg";
         const esterImg = "https://i.imgur.com/hSw7bLu.jpeg";
+        const dontcallImg = "https://i.imgur.com/KECj2Gg.png";
         const skinBtn = document.getElementById('skin-btn');
 
         // Skins array for easy expansion
         const skins = [
             { id: "default", name: "Default", img: defaultImg, unlocked: true, multiplier: 1 },
             { id: "wolf", name: "Wolf", img: wolfImg, unlocked: false, multiplier: 2 },
-            { id: "ester", name: "Ester Sale", img: esterImg, unlocked: false, multiplier: 5 }
+            { id: "ester", name: "Ester Sale", img: esterImg, unlocked: false, multiplier: 5 },
+            { id: "dontcall", name: "don't call me if you get lost", img: dontcallImg, unlocked: false, multiplier: 50 }
         ];
 
         // Load progress from localStorage
         function loadProgress() {
             const saved = JSON.parse(localStorage.getItem('tylerito-progress') || '{}');
             if (typeof saved.count === 'number') count = saved.count;
+            if (typeof saved.tickets === 'number') tickets = saved.tickets;
             if (typeof saved.currentSkin === 'string') currentSkin = saved.currentSkin;
             if (saved.skins) {
                 skins.forEach(skin => {
@@ -262,17 +389,21 @@
                         skin.unlocked = saved.skins[skin.id];
                         if (skin.id === "wolf") wolfUnlocked = skin.unlocked;
                         if (skin.id === "ester") esterUnlocked = skin.unlocked;
+                        if (skin.id === "dontcall") dontcallUnlocked = skin.unlocked;
                     }
                 });
             }
+            if (typeof saved.catUnlocked === 'boolean') catUnlocked = saved.catUnlocked;
         }
 
         // Save progress to localStorage
         function saveProgress() {
             const saveObj = {
                 count,
+                tickets,
                 currentSkin,
-                skins: {}
+                skins: {},
+                catUnlocked
             };
             skins.forEach(skin => {
                 saveObj.skins[skin.id] = skin.unlocked;
@@ -283,21 +414,107 @@
         // Update UI after loading progress
         function updateUI() {
             punti.textContent = `punti tyler: ${count}`;
+            ticketCounter.textContent = `biglietti: ${tickets}`;
             const selectedSkin = skins.find(s => s.id === currentSkin && s.unlocked) || skins[0];
             img.src = selectedSkin.img;
-            if (wolfUnlocked || esterUnlocked) {
+            if (wolfUnlocked || esterUnlocked || dontcallUnlocked) {
                 skinBtn.classList.add('show');
             } else {
                 skinBtn.classList.remove('show');
+            }
+            updateCatUI();
+        }
+
+        // Disable buy buttons for unlocked skins
+        function updateBuyButtons() {
+            // Wolf
+            const wolfSkin = skins.find(s => s.id === "wolf");
+            const wolfBtn = document.getElementById('buy-wolf');
+            if (wolfSkin && wolfSkin.unlocked && wolfBtn) {
+                wolfBtn.disabled = true;
+                wolfBtn.textContent = "Sbloccato!";
+                wolfBtn.style.background = "#888";
+                wolfBtn.style.cursor = "default";
+            } else if (wolfBtn) {
+                wolfBtn.disabled = false;
+                wolfBtn.textContent = "Acquista";
+                wolfBtn.style.background = "";
+                wolfBtn.style.cursor = "";
+            }
+            // Ester
+            const esterSkin = skins.find(s => s.id === "ester");
+            const esterBtn = document.getElementById('buy-ester');
+            if (esterSkin && esterSkin.unlocked && esterBtn) {
+                esterBtn.disabled = true;
+                esterBtn.textContent = "Sbloccato!";
+                esterBtn.style.background = "#888";
+                esterBtn.style.cursor = "default";
+            } else if (esterBtn) {
+                esterBtn.disabled = false;
+                esterBtn.textContent = "Acquista";
+                esterBtn.style.background = "";
+                esterBtn.style.cursor = "";
+            }
+            // Don't Call (ora si sblocca con i biglietti)
+            const dontcallSkin = skins.find(s => s.id === "dontcall");
+            const dontcallBtn = document.getElementById('buy-dontcall');
+            if (dontcallSkin && dontcallSkin.unlocked && dontcallBtn) {
+                dontcallBtn.disabled = true;
+                dontcallBtn.textContent = "Sbloccato!";
+                dontcallBtn.style.background = "#888";
+                dontcallBtn.style.cursor = "default";
+            } else if (dontcallBtn) {
+                dontcallBtn.disabled = false;
+                dontcallBtn.textContent = "Acquista";
+                dontcallBtn.style.background = "";
+                dontcallBtn.style.cursor = "";
+            }
+            // Cat
+            const catBtn = document.getElementById('buy-cat');
+            if (catUnlocked && catBtn) {
+                catBtn.disabled = true;
+                catBtn.textContent = "Hai il gatto!";
+                catBtn.style.background = "#888";
+                catBtn.style.cursor = "default";
+            } else if (catBtn) {
+                catBtn.disabled = false;
+                catBtn.textContent = "Acquista";
+                catBtn.style.background = "";
+                catBtn.style.cursor = "";
+            }
+        }
+
+        // Cat logic
+        function updateCatUI() {
+            if (catUnlocked) {
+                catImg.style.display = "block";
+                startCatMeow();
+            } else {
+                catImg.style.display = "none";
+                stopCatMeow();
+            }
+        }
+        function startCatMeow() {
+            if (catMeowInterval) return;
+            meowAudio.volume = 0.5;
+            catMeowInterval = setInterval(() => {
+                meowAudio.currentTime = 0;
+                meowAudio.play();
+            }, 60000); // every minute
+        }
+        function stopCatMeow() {
+            if (catMeowInterval) {
+                clearInterval(catMeowInterval);
+                catMeowInterval = null;
             }
         }
 
         // Initial load
         loadProgress();
         updateUI();
+        updateBuyButtons();
 
         img.addEventListener('click', () => {
-            // Find the current skin and use its multiplier
             const selectedSkin = skins.find(s => s.id === currentSkin && s.unlocked) || skins[0];
             const multiplier = selectedSkin.multiplier || 1;
             count += multiplier;
@@ -316,6 +533,7 @@
 
         shopBtn.addEventListener('click', () => {
             shopModal.style.display = 'flex';
+            updateBuyButtons();
         });
         closeModal.addEventListener('click', () => {
             shopModal.style.display = 'none';
@@ -333,7 +551,7 @@
 
         // Handle multiple buy buttons
         function updateSkinBtn() {
-            if (wolfUnlocked || esterUnlocked) {
+            if (wolfUnlocked || esterUnlocked || dontcallUnlocked) {
                 skinBtn.classList.add('show');
             }
             saveProgress();
@@ -343,23 +561,51 @@
                 const price = parseInt(this.getAttribute('data-price'));
                 const item = this.getAttribute('data-item');
                 const messageDiv = this.nextElementSibling;
+                if (item === "dontcall-ticket") {
+                    // Acquisto skin con i biglietti
+                    if (tickets >= price) {
+                        tickets -= price;
+                        ticketCounter.textContent = `biglietti: ${tickets}`;
+                        const dontcallSkin = skins.find(s => s.id === "dontcall");
+                        if (dontcallSkin) dontcallSkin.unlocked = true;
+                        dontcallUnlocked = true;
+                        messageDiv.textContent = "don't call me if you get lost sbloccato! Ora puoi cambiare skin!";
+                        updateSkinBtn();
+                        updateBuyButtons();
+                        saveProgress();
+                        setTimeout(() => { messageDiv.textContent = ''; }, 2500);
+                    } else {
+                        messageDiv.textContent = "Non hai abbastanza biglietti!";
+                        setTimeout(() => { messageDiv.textContent = ''; }, 2000);
+                    }
+                    return;
+                }
                 if (count >= price) {
                     count -= price;
                     punti.textContent = `punti tyler: ${count}`;
                     if (item === "ticket") {
-                        messageDiv.textContent = "perfetto! NON ti arriverà il biglietto acquistato!";
+                        tickets += 1;
+                        ticketCounter.textContent = `biglietti: ${tickets}`;
+                        messageDiv.textContent = "Hai ricevuto 1 biglietto!";
                     } else if (item === "wolf") {
                         messageDiv.textContent = "wolf sbloccato! Ora puoi cambiare skin!";
                         wolfUnlocked = true;
                         const wolfSkin = skins.find(s => s.id === "wolf");
                         if (wolfSkin) wolfSkin.unlocked = true;
                         updateSkinBtn();
+                        updateBuyButtons();
                     } else if (item === "ester") {
                         messageDiv.textContent = "ester sale sbloccato! Ora puoi cambiare skin!";
                         esterUnlocked = true;
                         const esterSkin = skins.find(s => s.id === "ester");
                         if (esterSkin) esterSkin.unlocked = true;
                         updateSkinBtn();
+                        updateBuyButtons();
+                    } else if (item === "cat") {
+                        messageDiv.textContent = "Hai adottato un gattino!";
+                        catUnlocked = true;
+                        updateCatUI();
+                        updateBuyButtons();
                     } else if (item === "autoclicker") {
                         messageDiv.textContent = "no, soffri ❤️";
                     }
@@ -372,13 +618,67 @@
             });
         });
 
+        // RESET BUTTON LOGIC
+        const resetBtn = document.getElementById('reset-btn');
+        resetBtn.addEventListener('click', () => {
+            if (confirm("Sei sicuro di voler cancellare tutti i tuoi progressi?")) {
+                localStorage.removeItem('tylerito-progress');
+                location.reload();
+            }
+        });
+
+        // Admin panel logic (now always visible when dontcall skin is active)
+        const adminPanel = document.getElementById('admin-panel');
+        const adminPointsInput = document.getElementById('admin-points');
+        const adminAddBtn = document.getElementById('admin-add-btn');
+        const adminAutoclickBtn = document.getElementById('admin-autoclick-btn');
+        const adminAutoclickStatus = document.getElementById('admin-autoclick-status');
+        let autoclickInterval = null;
+
+        function showAdminIfDontCall() {
+            if (currentSkin === "dontcall") {
+                adminPanel.style.display = 'block';
+            } else {
+                adminPanel.style.display = 'none';
+                if (autoclickInterval) {
+                    clearInterval(autoclickInterval);
+                    autoclickInterval = null;
+                    adminAutoclickBtn.textContent = "Autoclick ON";
+                    adminAutoclickStatus.textContent = "";
+                }
+            }
+        }
+
+        adminAddBtn.addEventListener('click', () => {
+            const val = parseInt(adminPointsInput.value);
+            if (!isNaN(val)) {
+                count += val;
+                punti.textContent = `punti tyler: ${count}`;
+                saveProgress();
+            }
+        });
+
+        adminAutoclickBtn.addEventListener('click', () => {
+            if (!autoclickInterval) {
+                autoclickInterval = setInterval(() => {
+                    img.click();
+                }, 100);
+                adminAutoclickBtn.textContent = "Autoclick OFF";
+                adminAutoclickStatus.textContent = " (attivo)";
+            } else {
+                clearInterval(autoclickInterval);
+                autoclickInterval = null;
+                adminAutoclickBtn.textContent = "Autoclick ON";
+                adminAutoclickStatus.textContent = "";
+            }
+        });
+
         // Skin modal logic
         const skinModal = document.getElementById('skin-modal');
         const closeSkinModal = document.getElementById('close-skin-modal');
         const skinList = document.getElementById('skin-list');
 
         skinBtn.addEventListener('click', () => {
-            // Populate skins
             skinList.innerHTML = '';
             skins.forEach(skin => {
                 if (skin.unlocked) {
@@ -394,6 +694,7 @@
                         currentSkin = skin.id;
                         skinModal.style.display = 'none';
                         saveProgress();
+                        showAdminIfDontCall();
                     };
                     skinList.appendChild(div);
                 }
@@ -404,6 +705,13 @@
         closeSkinModal.addEventListener('click', () => {
             skinModal.style.display = 'none';
         });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            showAdminIfDontCall();
+            updateCatUI();
+        });
+        showAdminIfDontCall();
+        updateCatUI();
     </script>
 </body>
 </html>
