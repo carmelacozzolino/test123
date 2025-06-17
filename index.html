@@ -71,6 +71,10 @@
             z-index: 10;
             pointer-events: none;
             user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
         }
         .shop-btn {
             position: fixed;
@@ -242,6 +246,128 @@
             display: none;
             user-select: none;
         }
+        .achievement-btn {
+            position: fixed;
+            top: 24px;
+            left: 150px;
+            background: #444;
+            color: #fff;
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 22px;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: background 0.2s;
+        }
+        .achievement-btn:hover {
+            background: #666;
+        }
+        .achievement-modal {
+            display: none;
+            position: fixed;
+            z-index: 300;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+        }
+        .achievement-modal-content {
+            background: #222;
+            padding: 32px 24px 24px 24px;
+            border-radius: 18px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.7);
+            min-width: 320px;
+            max-width: 95vw;
+            max-height: 80vh;
+            text-align: center;
+            position: relative;
+            overflow-y: auto;
+        }
+        .achievement-list {
+            margin-top: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .achievement-item {
+            color: #fff;
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+            font-size: 1.1rem;
+            background: #333;
+            border-radius: 8px;
+            padding: 10px 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .achievement-item.locked {
+            opacity: 0.5;
+        }
+        .achievement-unlock-notification {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #3b8c3b;
+            color: #fff;
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            padding: 16px 32px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+            z-index: 9999;
+            display: none;
+        }
+        .vinyl-btn {
+            position: fixed;
+            bottom: 32px;
+            left: 32px;
+            background: #444;
+            color: #fff;
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 22px;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: background 0.2s;
+        }
+        .vinyl-btn:hover {
+            background: #666;
+        }
+        .vinyl-modal {
+            display: none;
+            position: fixed;
+            z-index: 350;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+        }
+        .vinyl-modal-content {
+            background: #222;
+            padding: 32px 24px 24px 24px;
+            border-radius: 18px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.7);
+            min-width: 340px;
+            max-width: 95vw;
+            max-height: 80vh;
+            text-align: center;
+            position: relative;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
@@ -251,21 +377,23 @@
     <button class="shop-btn" id="shop-btn">negozio</button>
     <button class="reset-btn" id="reset-btn">Resetta</button>
     <button class="skin-btn" id="skin-btn">skin</button>
+    <button class="achievement-btn" id="achievement-btn">traguardi</button>
+    <button class="vinyl-btn" id="vinyl-btn">Vinili</button>
     <div class="image-container">
         <img class="center-img" src="https://i.imgur.com/QSPTt9m.jpeg" alt="tylerito image" id="tyler-img">
-        <img id="cat-img" src="https://i.imgur.com/AJiDR64.jpeg" alt="cat">
         <div class="punti-tyler" id="punti-tyler">punti tyler: 0</div>
         <div class="ticket-counter" id="ticket-counter">biglietti: 0</div>
     </div>
-    <div class="footer-text">
+    <div class="footer-text" style="display: flex; align-items: center; justify-content: center; gap: 16px;">
         creato da una medusa a forma di parallelepipedo
+        <img id="cat-img" src="https://i.imgur.com/AJiDR64.jpeg" alt="cat" style="width: 48px; height: 48px; display: none; margin-left: 12px; user-select: none;" />
     </div>
 
     <!-- Shop Modal -->
     <div class="modal" id="shop-modal">
         <div class="modal-content" style="max-width: 380px;">
             <span class="close" id="close-modal">&times;</span>
-            <h2 style="font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;">negozio</h2>
+            <h2 style="font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif; color: #fff;">negozio</h2>
             <div class="shop-item">
                 <div style="font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif; font-size: 1.2rem; color: #fff; margin-bottom: 10px;">
                     biglietto tour chromakopia - 100 punti tyler
@@ -318,6 +446,33 @@
                 <button class="buy-btn" data-price="500" data-item="autoclicker">Acquista</button>
                 <div class="buy-message"></div>
             </div>
+            <div class="shop-item">
+                <div style="font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif; font-size: 1.2rem; color: #fff; margin-bottom: 10px;">
+                    IGOR (vinile) - 200 punti tyler
+                </div>
+                <img src="https://i.imgur.com/ilGcnlf.png" alt="IGOR" style="max-width:100px; border-radius:10px; box-shadow:0 2px 12px rgba(0,0,0,0.4);">
+                <br>
+                <button class="buy-btn" id="buy-vinyl-igor" data-price="200" data-item="vinyl-igor">Acquista</button>
+                <div class="buy-message"></div>
+            </div>
+            <div class="shop-item">
+                <div style="font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif; font-size: 1.2rem; color: #fff; margin-bottom: 10px;">
+                    Flower Boy (vinile) - 200 punti tyler
+                </div>
+                <img src="https://i.imgur.com/tcG2N2f.jpeg" alt="Flower Boy" style="max-width:100px; border-radius:10px; box-shadow:0 2px 12px rgba(0,0,0,0.4);">
+                <br>
+                <button class="buy-btn" id="buy-vinyl-flower" data-price="200" data-item="vinyl-flower">Acquista</button>
+                <div class="buy-message"></div>
+            </div>
+            <div class="shop-item">
+                <div style="font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif; font-size: 1.2rem; color: #fff; margin-bottom: 10px;">
+                    Call Me If You Get Lost (vinile) - 200 punti tyler
+                </div>
+                <img src="https://i.imgur.com/v3RCTQB.jpeg" alt="Call Me If You Get Lost" style="max-width:100px; border-radius:10px; box-shadow:0 2px 12px rgba(0,0,0,0.4);">
+                <br>
+                <button class="buy-btn" id="buy-vinyl-cmiygl" data-price="200" data-item="vinyl-cmiygl">Acquista</button>
+                <div class="buy-message"></div>
+            </div>
         </div>
     </div>
 
@@ -325,7 +480,7 @@
     <div class="modal" id="skin-modal">
         <div class="modal-content" style="max-width:400px;">
             <span class="close" id="close-skin-modal">&times;</span>
-            <h2 style="font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;">scegli la skin</h2>
+            <h2 style="font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif; color: #fff;">scegli la skin</h2>
             <div id="skin-list" style="display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-top:20px;">
                 <!-- Skins will be inserted here -->
             </div>
@@ -344,6 +499,25 @@
         <div style="margin:18px 0;">
             <button id="admin-autoclick-btn">Autoclick ON</button>
             <span id="admin-autoclick-status" style="color:#fff; margin-left:10px;"></span>
+        </div>
+    </div>
+
+    <!-- Achievements Modal -->
+    <div class="achievement-modal" id="achievement-modal">
+        <div class="achievement-modal-content">
+            <span class="close" id="close-achievement-modal">&times;</span>
+            <h2 style="font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif; color: #fff;">Achievements</h2>
+            <div class="achievement-list" id="achievement-list"></div>
+        </div>
+    </div>
+    <div class="achievement-unlock-notification" id="achievement-unlock-notification"></div>
+
+    <!-- Vinyls Modal -->
+    <div class="vinyl-modal" id="vinyl-modal">
+        <div class="vinyl-modal-content">
+            <span class="close" id="close-vinyl-modal">&times;</span>
+            <h2 style="font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif; color: #fff;">Vinili sbloccati</h2>
+            <ul id="vinyl-list" style="color:#fff; font-family:'Comic Sans MS', 'Comic Sans', cursive, sans-serif; font-size:1.1rem; margin-top:18px; text-align:left;"></ul>
         </div>
     </div>
 
@@ -376,6 +550,73 @@
             { id: "ester", name: "Ester Sale", img: esterImg, unlocked: false, multiplier: 5 },
             { id: "dontcall", name: "don't call me if you get lost", img: dontcallImg, unlocked: false, multiplier: 50 }
         ];
+
+        // === Vinyl Collection System (Simple) ===
+        const vinyls = [
+            { id: 'vinyl-igor', name: 'IGOR', img: 'https://i.imgur.com/ilGcnlf.png' },
+            { id: 'vinyl-flower', name: 'Flower Boy', img: 'https://i.imgur.com/tcG2N2f.jpeg' },
+            { id: 'vinyl-cmiygl', name: 'Call Me If You Get Lost', img: 'https://i.imgur.com/v3RCTQB.jpeg' }
+        ];
+        let unlockedVinyls = [];
+        function loadVinyls() {
+            // Always check for duplicates and only allow valid vinyl ids
+            const saved = JSON.parse(localStorage.getItem('tylerito-vinyls') || '[]');
+            unlockedVinyls = saved.filter(id => vinyls.some(v => v.id === id));
+        }
+        function saveVinyls() {
+            localStorage.setItem('tylerito-vinyls', JSON.stringify(unlockedVinyls));
+        }
+        function renderVinylList() {
+            const list = document.getElementById('vinyl-list');
+            list.innerHTML = '';
+            if (!Array.isArray(unlockedVinyls) || unlockedVinyls.length === 0) {
+                list.innerHTML = '<div style="color:#fff; font-family:Comic Sans MS, Comic Sans, cursive, sans-serif; font-size:1.1rem; margin-top:18px; text-align:left;">Nessun vinile sbloccato!</div>';
+            } else {
+                const row = document.createElement('div');
+                row.style.display = 'flex';
+                row.style.gap = '24px';
+                unlockedVinyls.forEach(id => {
+                    const v = vinyls.find(v => v.id === id);
+                    if (v) {
+                        const vinylDiv = document.createElement('div');
+                        vinylDiv.style.display = 'flex';
+                        vinylDiv.style.flexDirection = 'column';
+                        vinylDiv.style.alignItems = 'center';
+                        vinylDiv.style.width = '120px';
+                        const vinylImg = document.createElement('img');
+                        vinylImg.src = v.img;
+                        vinylImg.alt = v.name;
+                        vinylImg.style.width = '120px';
+                        vinylImg.style.height = '90px';
+                        vinylImg.style.objectFit = 'cover';
+                        vinylImg.style.borderRadius = '10px';
+                        vinylImg.style.boxShadow = '0 2px 12px rgba(0,0,0,0.4)';
+                        const vinylLabel = document.createElement('div');
+                        vinylLabel.textContent = v.name;
+                        vinylLabel.style.color = '#fff';
+                        vinylLabel.style.fontFamily = "'Comic Sans MS', 'Comic Sans', cursive, sans-serif";
+                        vinylLabel.style.fontSize = '1em';
+                        vinylLabel.style.marginTop = '8px';
+                        vinylDiv.appendChild(vinylImg);
+                        vinylDiv.appendChild(vinylLabel);
+                        row.appendChild(vinylDiv);
+                    }
+                });
+                list.appendChild(row);
+            }
+        }
+        document.getElementById('vinyl-btn').addEventListener('click', () => {
+            renderVinylList();
+            document.getElementById('vinyl-modal').style.display = 'flex';
+        });
+        document.getElementById('close-vinyl-modal').addEventListener('click', () => {
+            document.getElementById('vinyl-modal').style.display = 'none';
+        });
+        window.addEventListener('click', (e) => {
+            if (e.target === document.getElementById('vinyl-modal')) {
+                document.getElementById('vinyl-modal').style.display = 'none';
+            }
+        });
 
         // Load progress from localStorage
         function loadProgress() {
@@ -509,10 +750,168 @@
             }
         }
 
+        // === Achievements System ===
+        const achievementBtn = document.getElementById('achievement-btn');
+        const achievementModal = document.getElementById('achievement-modal');
+        const closeAchievementModal = document.getElementById('close-achievement-modal');
+        const achievementList = document.getElementById('achievement-list');
+        const achievementNotification = document.getElementById('achievement-unlock-notification');
+        
+        const achievements = [
+            { id: "first_click", name: "First Click!", desc: "Make your first click.", unlocked: false },
+            { id: "hundred_points", name: "100 Points!", desc: "Reach 100 punti tyler.", unlocked: false },
+            { id: "thousand_points", name: "1,000 Points!", desc: "Reach 1,000 punti tyler.", unlocked: false },
+            { id: "ten_tickets", name: "Ticket Collector", desc: "Collect 10 biglietti.", unlocked: false },
+            { id: "wolf_unlocked", name: "Wolf Skin!", desc: "Unlock the Wolf skin.", unlocked: false },
+            { id: "cat_unlocked", name: "Cat Person", desc: "Unlock the Cat.", unlocked: false },
+            { id: "all_skins", name: "Fashionista", desc: "Unlock all skins.", unlocked: false }
+        ];
+
+        function loadAchievements() {
+            const saved = JSON.parse(localStorage.getItem('tylerito-achievements') || '{}');
+            achievements.forEach(ach => {
+                if (typeof saved[ach.id] === 'boolean') ach.unlocked = saved[ach.id];
+            });
+        }
+        function saveAchievements() {
+            const saveObj = {};
+            achievements.forEach(ach => { saveObj[ach.id] = ach.unlocked; });
+            localStorage.setItem('tylerito-achievements', JSON.stringify(saveObj));
+        }
+        function showAchievementNotification(text) {
+            achievementNotification.textContent = text;
+            achievementNotification.style.display = 'block';
+            setTimeout(() => { achievementNotification.style.display = 'none'; }, 2500);
+        }
+        function checkAchievements() {
+            // First click
+            if (!achievements.find(ach => ach.id === "first_click").unlocked && count > 0) {
+                achievements.find(ach => ach.id === "first_click").unlocked = true;
+                showAchievementNotification("Achievement unlocked: First Click!");
+            }
+            // 100 points
+            if (!achievements.find(ach => ach.id === "hundred_points").unlocked && count >= 100) {
+                achievements.find(ach => ach.id === "hundred_points").unlocked = true;
+                showAchievementNotification("Achievement unlocked: 100 Points!");
+            }
+            // 1,000 points
+            if (!achievements.find(ach => ach.id === "thousand_points").unlocked && count >= 1000) {
+                achievements.find(ach => ach.id === "thousand_points").unlocked = true;
+                showAchievementNotification("Achievement unlocked: 1,000 Points!");
+            }
+            // 10 tickets
+            if (!achievements.find(ach => ach.id === "ten_tickets").unlocked && tickets >= 10) {
+                achievements.find(ach => ach.id === "ten_tickets").unlocked = true;
+                showAchievementNotification("Achievement unlocked: Ticket Collector!");
+            }
+            // Wolf skin
+            if (!achievements.find(ach => ach.id === "wolf_unlocked").unlocked && wolfUnlocked) {
+                achievements.find(ach => ach.id === "wolf_unlocked").unlocked = true;
+                showAchievementNotification("Achievement unlocked: Wolf Skin!");
+            }
+            // Cat
+            if (!achievements.find(ach => ach.id === "cat_unlocked").unlocked && catUnlocked) {
+                achievements.find(ach => ach.id === "cat_unlocked").unlocked = true;
+                showAchievementNotification("Achievement unlocked: Cat Person!");
+            }
+            // All skins
+            if (!achievements.find(ach => ach.id === "all_skins").unlocked && wolfUnlocked && esterUnlocked && dontcallUnlocked) {
+                achievements.find(ach => ach.id === "all_skins").unlocked = true;
+                showAchievementNotification("Achievement unlocked: Fashionista!");
+            }
+            saveAchievements();
+            renderAchievements();
+        }
+        function renderAchievements() {
+            achievementList.innerHTML = '';
+            achievements.forEach(ach => {
+                const div = document.createElement('div');
+                div.className = 'achievement-item' + (ach.unlocked ? '' : ' locked');
+                div.innerHTML = `<span>${ach.unlocked ? '🏆' : '🔒'}</span><span><b>${ach.name}</b><br><span style="font-size:0.95em;">${ach.desc}</span></span>`;
+                achievementList.appendChild(div);
+            });
+        }
+        achievementBtn.addEventListener('click', () => {
+            renderAchievements();
+            achievementModal.style.display = 'flex';
+        });
+        closeAchievementModal.addEventListener('click', () => {
+            achievementModal.style.display = 'none';
+        });
+        window.addEventListener('click', (e) => {
+            if (e.target === achievementModal) {
+                achievementModal.style.display = 'none';
+            }
+        });
+
+        // Vinyls logic
+        const vinylBtn = document.getElementById('vinyl-btn');
+        const vinylModal = document.getElementById('vinyl-modal');
+        const closeVinylModal = document.getElementById('close-vinyl-modal');
+        const vinylList = document.getElementById('vinyl-list');
+
+        function updateVinylsUI() {
+            vinylList.innerHTML = '';
+            if (unlockedVinyls.length === 0) {
+                vinylList.innerHTML = '<div style="color:#fff; font-family:Comic Sans MS, Comic Sans, cursive, sans-serif; font-size:1.1rem; margin-top:18px; text-align:left;">Nessun vinile sbloccato!</div>';
+            } else {
+                const row = document.createElement('div');
+                row.style.display = 'flex';
+                row.style.gap = '24px';
+                unlockedVinyls.forEach(id => {
+                    const v = vinyls.find(v => v.id === id);
+                    if (v) {
+                        const vinylDiv = document.createElement('div');
+                        vinylDiv.style.display = 'flex';
+                        vinylDiv.style.flexDirection = 'column';
+                        vinylDiv.style.alignItems = 'center';
+                        vinylDiv.style.width = '120px';
+                        const vinylImg = document.createElement('img');
+                        vinylImg.src = v.img;
+                        vinylImg.alt = v.name;
+                        vinylImg.style.width = '120px';
+                        vinylImg.style.height = '90px';
+                        vinylImg.style.objectFit = 'cover';
+                        vinylImg.style.borderRadius = '10px';
+                        vinylImg.style.boxShadow = '0 2px 12px rgba(0,0,0,0.4)';
+                        const vinylLabel = document.createElement('div');
+                        vinylLabel.textContent = v.name;
+                        vinylLabel.style.color = '#fff';
+                        vinylLabel.style.fontFamily = "'Comic Sans MS', 'Comic Sans', cursive, sans-serif";
+                        vinylLabel.style.fontSize = '1em';
+                        vinylLabel.style.marginTop = '8px';
+                        vinylDiv.appendChild(vinylImg);
+                        vinylDiv.appendChild(vinylLabel);
+                        row.appendChild(vinylDiv);
+                    }
+                });
+                vinylList.appendChild(row);
+            }
+        }
+
+        vinylBtn.addEventListener('click', () => {
+            updateVinylsUI();
+            vinylModal.style.display = 'flex';
+        });
+        closeVinylModal.addEventListener('click', () => {
+            vinylModal.style.display = 'none';
+        });
+        window.addEventListener('click', (e) => {
+            if (e.target === vinylModal) {
+                vinylModal.style.display = 'none';
+            }
+        });
+
         // Initial load
         loadProgress();
+        loadAchievements();
+        loadVinyls();
+        // Ensure unlockedVinyls is always an array of valid vinyl ids
+        unlockedVinyls = unlockedVinyls.filter(id => vinyls.some(v => v.id === id));
         updateUI();
         updateBuyButtons();
+        checkAchievements();
+        // renderVinylList(); // <-- Remove this line, only use updateVinylsUI when opening modal
 
         img.addEventListener('click', () => {
             const selectedSkin = skins.find(s => s.id === currentSkin && s.unlocked) || skins[0];
@@ -524,6 +923,7 @@
                 img.classList.remove('shrink');
             }, 100);
             saveProgress();
+            checkAchievements();
         });
 
         // Shop modal logic
@@ -573,6 +973,7 @@
                         updateSkinBtn();
                         updateBuyButtons();
                         saveProgress();
+                        checkAchievements();
                         setTimeout(() => { messageDiv.textContent = ''; }, 2500);
                     } else {
                         messageDiv.textContent = "Non hai abbastanza biglietti!";
@@ -594,6 +995,7 @@
                         if (wolfSkin) wolfSkin.unlocked = true;
                         updateSkinBtn();
                         updateBuyButtons();
+                        checkAchievements();
                     } else if (item === "ester") {
                         messageDiv.textContent = "ester sale sbloccato! Ora puoi cambiare skin!";
                         esterUnlocked = true;
@@ -601,16 +1003,28 @@
                         if (esterSkin) esterSkin.unlocked = true;
                         updateSkinBtn();
                         updateBuyButtons();
+                        checkAchievements();
                     } else if (item === "cat") {
                         messageDiv.textContent = "Hai adottato un gattino!";
                         catUnlocked = true;
                         updateCatUI();
                         updateBuyButtons();
+                        checkAchievements();
                     } else if (item === "autoclicker") {
                         messageDiv.textContent = "no, soffri ❤️";
+                    } else if (item.startsWith("vinyl-")) {
+                        if (!unlockedVinyls.includes(item)) {
+                            unlockedVinyls.push(item);
+                            saveVinyls();
+                            updateVinylsUI();
+                            messageDiv.textContent = "Vinile sbloccato!";
+                        } else {
+                            messageDiv.textContent = "Hai già questo vinile!";
+                        }
                     }
                     setTimeout(() => { messageDiv.textContent = ''; }, 2500);
                     saveProgress();
+                    checkAchievements();
                 } else {
                     messageDiv.textContent = "Non hai abbastanza punti tyler!";
                     setTimeout(() => { messageDiv.textContent = ''; }, 2000);
@@ -623,6 +1037,8 @@
         resetBtn.addEventListener('click', () => {
             if (confirm("Sei sicuro di voler cancellare tutti i tuoi progressi?")) {
                 localStorage.removeItem('tylerito-progress');
+                localStorage.removeItem('tylerito-achievements');
+                localStorage.removeItem('tylerito-vinyls'); // <-- Clear vinyls progress too
                 location.reload();
             }
         });
@@ -655,6 +1071,7 @@
                 count += val;
                 punti.textContent = `punti tyler: ${count}`;
                 saveProgress();
+                checkAchievements();
             }
         });
 
@@ -705,13 +1122,6 @@
         closeSkinModal.addEventListener('click', () => {
             skinModal.style.display = 'none';
         });
-
-        window.addEventListener('DOMContentLoaded', () => {
-            showAdminIfDontCall();
-            updateCatUI();
-        });
-        showAdminIfDontCall();
-        updateCatUI();
     </script>
 </body>
 </html>
